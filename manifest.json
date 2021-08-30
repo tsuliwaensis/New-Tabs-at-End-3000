@@ -12,6 +12,5 @@
 	"manifest_version": 3,
 	"name": "New Tabs at End 3000",
 	"permissions": ["tabs"],
-	"host_permissions": ["http://*/*", "https://*/*"],
 	"version": "3.0.0"
 }

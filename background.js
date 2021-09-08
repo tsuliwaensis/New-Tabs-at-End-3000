@@ -1,37 +1,55 @@
 
-var selectedIndexes = {};
+var tabIndex = {};
 
-// Move all new tabs to the end, assuming you have fewer than 9,999 tabs open.
-chrome.tabs.onCreated.addListener((tab) => {
-	chrome.tabs.move(tab.id, { "index": 9999 });
+// Move all new tabs to the end, assuming you have fewer than 9,999 tabs open
+chrome.tabs.onCreated.addListener((newTab) => {
+	chrome.tabs.move(newTab.id, { "index": 9999 });
 });
 
-// Store the currently selected tab index for each window.
-chrome.tabs.onActivated.addListener((objTab) => {
-	chrome.tabs.get(objTab.tabId, function(tab) {
-		selectedIndexes[objTab.windowId] = tab.index;
+// Store the position of the selected tab in the tab index
+// Use the active Chrome window's id as the index key property
+chrome.tabs.onActivated.addListener((objWin) => {
+	chrome.tabs.get(objWin.tabId, function(selectedTab) {
+		tabIndex[objWin.windowId] = selectedTab.index;
 	});
 });
 
-// When a tab is removed, select the next tab (based on that selectedIndex for that window)
-chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+// When a tab is removed, select the tab to its left
+/*chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 	if (!removeInfo.isWindowClosing) {
-		chrome.tabs.query({}, function(tabs) {
+		chrome.tabs.query({}, function(objTabs) {
+		try{
+			// Sometimes closing the last tab / window doesn't set isWindowClosing to true
+			if (typeof objTabs === "undefined") {
+				console.log(removeInfo);
+				return;
+			}
 
-			var windowId = tabs[0].windowId;
+			// Get the active Chrome window's id. This is the property of tab index
+			var activeWindowId = objTabs[0].windowId;
+			var selectedTab = 0;
 
-			if (!(windowId in selectedIndexes)) {
-				selectedIndex = 0;
+			console.log("OnRemoved: ");
+			console.log(objTabs);
+			console.log(tabIndex);
+
+			if (activeWindowId in tabIndex) {
+				selectedTab = tabIndex[activeWindowId];
+			}
+			console.log("selectedTab: " + selectedTab);
+			console.log("tab length: " + objTabs.length);
+			//if (objTabs.length <= selectedTab) {
+			if (objTabs.length >= 2) {
+				chrome.tabs.update(objTabs[objTabs.length - 1].id, { selected: true });
 			} else {
-				selectedIndex = selectedIndexes[windowId];
+				chrome.tabs.update(objTabs[0].id, { selected: true });
 			}
-
-			if (tabs.length <= selectedIndex) {
-				chrome.tabs.update(tabs[tabs.length - 1].id, { selected : true });
-			}
-			else {
-				chrome.tabs.update(tabs[selectedIndex].id, { selected : true });
-			}
+		} catch(e) {
+			console.log("error");
+			console.log(e);
+			console.log(objTabs);
+		}
 		});
 	}
-});
+}
+});*/

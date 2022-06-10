@@ -11,6 +11,5 @@
 	"incognito": "spanning",
 	"manifest_version": 3,
 	"name": "New Tabs at End 3000",
-	"permissions": ["tabs"],
 	"version": "3.0.0.1"
 }

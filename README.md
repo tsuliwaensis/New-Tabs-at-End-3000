@@ -1,7 +1,10 @@
 # New-Tabs-at-End-3000
 
-I forked this repository in order to add a delay when the extension is started. This is in order to prevent tab groups from getting destroyed in Brave Browser.
+I forked this repository in order to add a 3 second delay when the extension is started. This is in order to prevent tab groups from getting destroyed in Brave Browser.
 
+## How to install
+
+Unfortunately I do not have a chrome developer account, so you'll need to enable developer mode and load the extension unpacked. Basically downlod the repository as a zip, extract the folder, then point chrome to the extracted root folder.
 
 ## Previous notes
 

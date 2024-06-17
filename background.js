@@ -1,18 +1,31 @@
 
 var tabIndex = {};
 
-// Move all new tabs to the end, assuming you have fewer than 9,999 tabs open
-chrome.tabs.onCreated.addListener((newTab) => {
-	chrome.tabs.move(newTab.id, { "index": 9999 });
-});
+console.log("Waiting 3 seconds to enable New Tabs at End 3000...");
 
-// Store the position of the selected tab in the tab index
-// Use the active Chrome window's id as the index key property
-chrome.tabs.onActivated.addListener((objWin) => {
-	chrome.tabs.get(objWin.tabId, function(selectedTab) {
-		tabIndex[objWin.windowId] = selectedTab.index;
+function addListeners() {
+  console.log("Adding listeners for New Tabs at End 3000...");
+
+	// Move all new tabs to the end, assuming you have fewer than 9,999 tabs open
+	chrome.tabs.onCreated.addListener((newTab) => {
+		chrome.tabs.move(newTab.id, { "index": 9999 });
 	});
-});
+	
+	// Store the position of the selected tab in the tab index
+	// Use the active Chrome window's id as the index key property
+	chrome.tabs.onActivated.addListener((objWin) => {
+		chrome.tabs.get(objWin.tabId, function(selectedTab) {
+			tabIndex[objWin.windowId] = selectedTab.index;
+		});
+	});
+}
+
+// Delay loading by 3 seconds before adding listeners
+setTimeout(() => {
+  addListeners();
+}, 3000);
+
+
 
 // When a tab is removed, select the tab to its left
 /*chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {

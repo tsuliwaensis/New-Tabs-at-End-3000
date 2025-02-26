@@ -2,6 +2,7 @@
 	"background": {
 		"service_worker": "background.js"
 	},
+	"permissions": [ "tabs", "tabGroup" ],
 	"description": "Forces new tabs to open at the end of the tab strip.",
 	"icons": {
 		"128": "skin/icon-128.png",
